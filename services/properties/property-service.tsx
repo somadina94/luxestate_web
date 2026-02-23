@@ -28,7 +28,14 @@ export interface SearchPropertiesParams {
   is_active?: boolean | null;
   skip?: number;
   limit?: number;
-  sort_by?: "created_at" | "updated_at" | "price" | "title" | "bedrooms" | "bathrooms" | "square_feet";
+  sort_by?:
+    | "created_at"
+    | "updated_at"
+    | "price"
+    | "title"
+    | "bedrooms"
+    | "bathrooms"
+    | "square_feet";
   sort_order?: "asc" | "desc";
 }
 
@@ -449,8 +456,9 @@ class PropertyService {
     try {
       // Build query parameters, filtering out null/undefined values
       // Using a union type to allow arrays for features and amenities
-      const queryParams: Record<string, string | number | boolean | string[]> = {};
-      
+      const queryParams: Record<string, string | number | boolean | string[]> =
+        {};
+
       // Add string parameters
       if (params.city !== undefined && params.city !== null) {
         queryParams.city = params.city;
@@ -496,10 +504,16 @@ class PropertyService {
       if (params.max_bathrooms !== undefined && params.max_bathrooms !== null) {
         queryParams.max_bathrooms = params.max_bathrooms;
       }
-      if (params.min_square_feet !== undefined && params.min_square_feet !== null) {
+      if (
+        params.min_square_feet !== undefined &&
+        params.min_square_feet !== null
+      ) {
         queryParams.min_square_feet = params.min_square_feet;
       }
-      if (params.max_square_feet !== undefined && params.max_square_feet !== null) {
+      if (
+        params.max_square_feet !== undefined &&
+        params.max_square_feet !== null
+      ) {
         queryParams.max_square_feet = params.max_square_feet;
       }
       if (params.min_lot_size !== undefined && params.min_lot_size !== null) {
@@ -508,10 +522,16 @@ class PropertyService {
       if (params.max_lot_size !== undefined && params.max_lot_size !== null) {
         queryParams.max_lot_size = params.max_lot_size;
       }
-      if (params.min_year_built !== undefined && params.min_year_built !== null) {
+      if (
+        params.min_year_built !== undefined &&
+        params.min_year_built !== null
+      ) {
         queryParams.min_year_built = params.min_year_built;
       }
-      if (params.max_year_built !== undefined && params.max_year_built !== null) {
+      if (
+        params.max_year_built !== undefined &&
+        params.max_year_built !== null
+      ) {
         queryParams.max_year_built = params.max_year_built;
       }
 
@@ -525,10 +545,18 @@ class PropertyService {
 
       // Add array parameters (features and amenities)
       // Axios handles arrays natively, serializing them as ?features=value1&features=value2
-      if (params.features !== undefined && params.features !== null && params.features.length > 0) {
+      if (
+        params.features !== undefined &&
+        params.features !== null &&
+        params.features.length > 0
+      ) {
         queryParams.features = params.features;
       }
-      if (params.amenities !== undefined && params.amenities !== null && params.amenities.length > 0) {
+      if (
+        params.amenities !== undefined &&
+        params.amenities !== null &&
+        params.amenities.length > 0
+      ) {
         queryParams.amenities = params.amenities;
       }
 
@@ -559,6 +587,139 @@ class PropertyService {
           message:
             (axiosError.response.data as { detail?: string })?.detail ||
             "Search failed",
+        };
+      } else if (axiosError.request) {
+        return {
+          status: 0,
+          data: null,
+          message: "No response from server. Please check your connection.",
+        };
+      } else {
+        return {
+          status: 0,
+          data: null,
+          message: axiosError.message || "An error occurred",
+        };
+      }
+    }
+  }
+  async getProperty(propertyId: number) {
+    try {
+      const response = await axiosInstance.get(`/properties/${propertyId}`, {});
+      return { status: response.status, data: response.data };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        return {
+          status: axiosError.response.status,
+          data: axiosError.response.data,
+          message:
+            (axiosError.response.data as { detail?: string })?.detail ||
+            "Login failed",
+        };
+      } else if (axiosError.request) {
+        return {
+          status: 0,
+          data: null,
+          message: "No response from server. Please check your connection.",
+        };
+      } else {
+        return {
+          status: 0,
+          data: null,
+          message: axiosError.message || "An error occurred",
+        };
+      }
+    }
+  }
+  async markAsFavorite(propertyId: number, access_token: string) {
+    console.log("markAsFavorite", propertyId, access_token);
+    try {
+      const response = await axiosInstance.post(
+        `/favorites/${propertyId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        },
+      );
+      return { status: response.status, data: response.data };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        return {
+          status: axiosError.response.status,
+          data: axiosError.response.data,
+          message:
+            (axiosError.response.data as { detail?: string })?.detail ||
+            "Login failed",
+        };
+      } else if (axiosError.request) {
+        return {
+          status: 0,
+          data: null,
+          message: "No response from server. Please check your connection.",
+        };
+      } else {
+        return {
+          status: 0,
+          data: null,
+          message: axiosError.message || "An error occurred",
+        };
+      }
+    }
+  }
+  async removeFromFavorite(propertyId: number, access_token: string) {
+    try {
+      const response = await axiosInstance.delete(`/favorites/${propertyId}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      return { status: response.status, data: response.data };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        return {
+          status: axiosError.response.status,
+          data: axiosError.response.data,
+          message:
+            (axiosError.response.data as { detail?: string })?.detail ||
+            "Login failed",
+        };
+      } else if (axiosError.request) {
+        return {
+          status: 0,
+          data: null,
+          message: "No response from server. Please check your connection.",
+        };
+      } else {
+        return {
+          status: 0,
+          data: null,
+          message: axiosError.message || "An error occurred",
+        };
+      }
+    }
+  }
+  async getMyFavorites(access_token: string) {
+    try {
+      const response = await axiosInstance.get(`/favorites/me`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      return { status: response.status, data: response.data };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        return {
+          status: axiosError.response.status,
+          data: axiosError.response.data,
+          message:
+            (axiosError.response.data as { detail?: string })?.detail ||
+            "Login failed",
         };
       } else if (axiosError.request) {
         return {

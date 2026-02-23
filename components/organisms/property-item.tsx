@@ -1,3 +1,6 @@
+"use client";
+import { useAppSelector, AuthState, RootState } from "@/store";
+
 import { Property } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,10 +11,22 @@ interface propertyItemProps {
 }
 
 export default function PropertyItem({ property }: propertyItemProps) {
-  console.log(property.overview_image);
+  const { user } = useAppSelector(
+    (state: RootState) => state.auth,
+  ) as AuthState;
+
+  let path = `/properties/${property.id}`;
+
+  if (user?.role === "buyer") {
+    path = `/buyer-dashboard/properties/${property.id}`;
+  } else if (user?.role === "seller") {
+    path = `/seller-dashboard/properties/${property.id}`;
+  } else if (user?.role === "admin") {
+    path = `/admin-dashboard/properties/${property.id}`;
+  }
   return (
     <Link
-      href={`/admin-dashboard/properties/${property.id}`}
+      href={path}
       className="shadow-sm dark:bg-muted max-w-86 border rounded-lg"
     >
       <div className="flex flex-col gap-2">

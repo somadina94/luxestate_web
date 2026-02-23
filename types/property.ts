@@ -23,4 +23,6 @@ export interface Property {
   overview_image?: string;
   created_at?: Date;
   status: string;
+  agent: number;
+  is_favorite: boolean;
 }
