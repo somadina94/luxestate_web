@@ -22,7 +22,8 @@ export interface Property {
   listing_type: string;
   overview_image?: string;
   created_at?: Date;
-  status: string;
-  agent: number;
-  is_favorite: boolean;
+  status?: string;
+  agent?: number;
+  is_favorite?: boolean;
+  is_featured?: boolean;
 }

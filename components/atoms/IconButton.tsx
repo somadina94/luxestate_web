@@ -9,6 +9,7 @@ interface IconButtonProps {
   disabled?: boolean;
   type?: "button" | "submit";
   variant?: "destructive" | "secondary" | "outline";
+  className?: string;
 }
 
 export default function IconButton({
@@ -19,6 +20,7 @@ export default function IconButton({
   disabled,
   type,
   variant,
+  className,
 }: IconButtonProps) {
   return (
     <Button
@@ -26,7 +28,7 @@ export default function IconButton({
       type={type}
       onClick={onClick}
       variant={variant}
-      className="text-white hover:opacity-50 cursor-pointer"
+      className={`text-white hover:opacity-50 cursor-pointer ${className ?? ""}`.trim()}
     >
       <div className="flex flex-row items-center justify-center gap-4">
         <Icon className="h-8 w-8 text-white" />

@@ -22,7 +22,6 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
 import { authService } from "@/services";
-import { useAppDispatch, login, setUser } from "@/store";
 import Link from "next/link";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
@@ -53,7 +52,6 @@ const formSchema = z
   });
 
 export default function SignupForm() {
-  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({

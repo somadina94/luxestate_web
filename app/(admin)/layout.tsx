@@ -7,7 +7,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import AdminSidebar from "@/components/molecules/admin-sidebar";
+import SidebarComponent from "@/components/molecules/sidebar";
 import DashboardHeader from "@/components/molecules/dashboard-header";
 
 export const metadata: Metadata = {
@@ -30,7 +30,7 @@ export default function RootLayout({
       <ReduxProvider>
         <DashboardHeader />
         <SidebarProvider>
-          <AdminSidebar />
+          <SidebarComponent />
           <SidebarInset />
           <main className="w-full">
             <SidebarTrigger />

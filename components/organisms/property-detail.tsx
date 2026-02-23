@@ -8,6 +8,7 @@ import { formatDate } from "@/utils/helpers";
 import { formatAmount } from "@/utils/helpers";
 import { toast } from "sonner";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -25,8 +26,10 @@ import {
   TrashIcon,
   StarIcon,
   MailIcon,
+  ImageIcon,
 } from "lucide-react";
 import IconButton from "@/components/atoms/IconButton";
+import Loading from "../atoms/loading";
 
 export default function PropertyDetail() {
   const { id } = useParams();
@@ -40,14 +43,18 @@ export default function PropertyDetail() {
     images[0]?.file_url ||
       "https://images.unsplash.com/photo-1760434875920-2b7a79ea163a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
   useEffect(() => {
     async function fetchProperty() {
+      setIsLoading(true);
       const res = await propertyService.getProperty(Number(id));
       if (res.status === 200) {
         setProperty(res.data);
       } else {
         toast.error(res.message || "Failed to fetch property");
       }
+      setIsLoading(false);
     }
     const fetchImages = async () => {
       const res = await propertyService.getPropertyImages(Number(id));
@@ -99,6 +106,10 @@ export default function PropertyDetail() {
     } else {
       toast.error(res.message || "Failed to remove from favorites");
     }
+  }
+
+  if (isLoading) {
+    return <Loading />;
   }
 
   return (
@@ -158,6 +169,18 @@ export default function PropertyDetail() {
           ))}
         </CardFooter>
       </Card>
+      {user?.role === "seller" && (
+        <div className="w-full max-w-xl mx-auto flex">
+          <IconButton
+            title="Gallery"
+            Icon={ImageIcon}
+            className="w-full"
+            onClick={() =>
+              router.push(`/seller-dashboard/properties/${id}/gallery`)
+            }
+          />
+        </div>
+      )}
       <Card className="w-full max-w-xl mx-auto">
         <CardContent>
           <div className="grid grid-cols-2 gap-2 justify-items-start">
@@ -226,14 +249,22 @@ export default function PropertyDetail() {
           <span className="text-sm text-gray-500">{property?.description}</span>
         </CardContent>
       </Card>
-      {user?.id === property?.agent && (
+      {user?.role === "seller" && (
         <Card className="w-full max-w-xl mx-auto">
           <CardHeader>
             <CardTitle>Actions</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-row gap-2 justify-between">
-              <IconButton title="Update Property" Icon={PencilIcon} />
+              <IconButton
+                title="Update Property"
+                Icon={PencilIcon}
+                onClick={() =>
+                  router.push(
+                    `/seller-dashboard/properties/${property?.id}/update-property`,
+                  )
+                }
+              />
               <IconButton
                 title="Delete Property"
                 Icon={TrashIcon}
@@ -243,15 +274,18 @@ export default function PropertyDetail() {
           </CardContent>
         </Card>
       )}
-      <Card className="w-full max-w-xl mx-auto">
-        <CardContent>
-          <IconButton
-            title="Contact Agent"
-            Icon={MailIcon}
-            onClick={() => {}}
-          />
-        </CardContent>
-      </Card>
+      {user?.role === "buyer" && (
+        <Card className="w-full max-w-xl mx-auto">
+          <CardContent>
+            <IconButton
+              title="Contact Agent"
+              Icon={MailIcon}
+              className="w-full"
+              onClick={() => {}}
+            />
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

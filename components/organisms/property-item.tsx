@@ -42,6 +42,7 @@ export default function PropertyItem({ property }: propertyItemProps) {
           height={360}
         />
       </div>
+      <span className="block border-b px-2">{property.title}</span>
       <span className="block border-b px-2 text-primary">
         {property.currency} {property.price}
       </span>
