@@ -8,13 +8,11 @@ import { formatDate } from "@/utils/helpers";
 import { formatAmount } from "@/utils/helpers";
 import { toast } from "sonner";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-  CardDescription,
   CardFooter,
 } from "@/components/ui/card";
 import { PropertyImage } from "@/types";
@@ -26,6 +24,7 @@ import {
   PencilIcon,
   TrashIcon,
   StarIcon,
+  MailIcon,
 } from "lucide-react";
 import IconButton from "@/components/atoms/IconButton";
 
@@ -75,7 +74,7 @@ export default function PropertyDetail() {
     fetchProperty();
     fetchImages();
     fetchFavorites();
-  }, [id, access_token]);
+  }, [id, access_token, user?.id]);
 
   async function addToFavorite() {
     const res = await propertyService.markAsFavorite(
@@ -244,6 +243,15 @@ export default function PropertyDetail() {
           </CardContent>
         </Card>
       )}
+      <Card className="w-full max-w-xl mx-auto">
+        <CardContent>
+          <IconButton
+            title="Contact Agent"
+            Icon={MailIcon}
+            onClick={() => {}}
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 }
