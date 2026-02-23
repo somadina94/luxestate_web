@@ -8,11 +8,17 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import { ADMIN_MENU_ITEMS } from "@/constants/menu-items";
+import {
+  ADMIN_MENU_ITEMS,
+  BUYER_MENU_ITEMS,
+  SELLER_MENU_ITEMS,
+  MenuItem,
+} from "@/constants/menu-items";
 import Link from "next/link";
 import Image from "next/image";
 import logoDark from "@/assets/logo.png";
 import logoLight from "@/assets/logo-light.png";
+import { useAppSelector, RootState, AuthState } from "@/store";
 
 import { useTheme } from "next-themes";
 import { LightDarkToggle } from "../atoms/light-dark-toggle";
@@ -21,11 +27,23 @@ import { LogOut } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useLogout } from "@/hooks/use-logout";
 
-export default function AdminSidebar() {
+export default function SidebarComponent() {
   const theme = useTheme();
   const pathname = usePathname();
   const router = useRouter();
   const logout = useLogout();
+  const { user } = useAppSelector(
+    (state: RootState) => state.auth,
+  ) as AuthState;
+
+  let menuItems: MenuItem[] = [] as MenuItem[];
+  if (user?.role === "admin") {
+    menuItems = ADMIN_MENU_ITEMS;
+  } else if (user?.role === "buyer") {
+    menuItems = BUYER_MENU_ITEMS;
+  } else if (user?.role === "seller") {
+    menuItems = SELLER_MENU_ITEMS;
+  }
 
   return (
     <Sidebar collapsible="icon">
@@ -44,7 +62,7 @@ export default function AdminSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
-          {ADMIN_MENU_ITEMS.map((item) => {
+          {menuItems.map((item) => {
             const isActive = pathname === item.url;
             return (
               <SidebarMenuItem

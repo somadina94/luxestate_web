@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 import { ThemeProvider } from "@/context/theme-provider";
 import ReduxProvider from "@/context/redux-provider";
-import BuyerSidebar from "@/components/molecules/buyer-sidebar";
+import SidebarComponent from "@/components/molecules/sidebar";
 import {
   SidebarInset,
   SidebarProvider,
@@ -30,7 +30,7 @@ export default function RootLayout({
       <ReduxProvider>
         <DashboardHeader />
         <SidebarProvider>
-          <BuyerSidebar />
+          <SidebarComponent />
           <SidebarInset />
           <main className="w-full">
             <SidebarTrigger />

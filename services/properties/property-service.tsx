@@ -52,7 +52,7 @@ const axiosInstance = axios.create({
 });
 
 class PropertyService {
-  async createProperty(data: unknown, access_token: string) {
+  async createProperty(data: Property, access_token: string) {
     try {
       const response = await axiosInstance.post("/properties/", data, {
         headers: {
@@ -708,6 +708,50 @@ class PropertyService {
       const response = await axiosInstance.get(`/favorites/me`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
+        },
+      });
+      return { status: response.status, data: response.data };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        return {
+          status: axiosError.response.status,
+          data: axiosError.response.data,
+          message:
+            (axiosError.response.data as { detail?: string })?.detail ||
+            "Login failed",
+        };
+      } else if (axiosError.request) {
+        return {
+          status: 0,
+          data: null,
+          message: "No response from server. Please check your connection.",
+        };
+      } else {
+        return {
+          status: 0,
+          data: null,
+          message: axiosError.message || "An error occurred",
+        };
+      }
+    }
+  }
+
+  // Get /properties/agent/agent_id/
+  async getAgentProperties(
+    agentId: number,
+    access_token: string,
+    skip: number,
+    limit: number,
+  ) {
+    try {
+      const response = await axiosInstance.get(`/properties/agent/${agentId}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+        params: {
+          skip,
+          limit,
         },
       });
       return { status: response.status, data: response.data };
