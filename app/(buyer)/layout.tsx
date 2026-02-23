@@ -2,6 +2,13 @@ import type { Metadata } from "next";
 import "../globals.css";
 import { ThemeProvider } from "@/context/theme-provider";
 import ReduxProvider from "@/context/redux-provider";
+import BuyerSidebar from "@/components/molecules/buyer-sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import DashboardHeader from "@/components/molecules/dashboard-header";
 
 export const metadata: Metadata = {
   title: "Buyer Dashboard",
@@ -21,7 +28,15 @@ export default function RootLayout({
       disableTransitionOnChange
     >
       <ReduxProvider>
-        <main>{children}</main>
+        <DashboardHeader />
+        <SidebarProvider>
+          <BuyerSidebar />
+          <SidebarInset />
+          <main className="w-full">
+            <SidebarTrigger />
+            {children}
+          </main>
+        </SidebarProvider>
       </ReduxProvider>
     </ThemeProvider>
   );

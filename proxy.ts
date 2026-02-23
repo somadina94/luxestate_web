@@ -37,7 +37,7 @@ function isDashboardRoute(pathname: string) {
   return DASHBOARD_ROUTES.some((route) => pathname.startsWith(route));
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Auth pages: if already logged in, redirect to dashboard (or home)
