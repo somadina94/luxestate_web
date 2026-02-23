@@ -1,3 +1,4 @@
 import { User } from "./user";
+import { Property } from "./property";
 
-export { type User };
+export { type User, type Property };

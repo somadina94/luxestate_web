@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { AUTH_COOKIE_NAME } from "@/lib/auth-cookie";
 import authService from "@/services/auth/auth-service";
+import { useAppDispatch, setUser } from "./store";
 
 const LOGIN_PATH = "/login";
 const DEFAULT_AUTHENTICATED_REDIRECT = "/";
@@ -28,7 +29,7 @@ const ROLE_TO_DASHBOARD: Record<string, string> = {
 
 function isAuthRoute(pathname: string) {
   return AUTH_ROUTES.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`)
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
   );
 }
 
@@ -48,7 +49,8 @@ export function middleware(request: NextRequest) {
     return authService.getUser(accessToken).then(({ status, data }) => {
       if (status === 200 && data) {
         const userRole = (data.role ?? "").toLowerCase();
-        const dashboard = ROLE_TO_DASHBOARD[userRole] ?? DEFAULT_AUTHENTICATED_REDIRECT;
+        const dashboard =
+          ROLE_TO_DASHBOARD[userRole] ?? DEFAULT_AUTHENTICATED_REDIRECT;
         return NextResponse.redirect(new URL(dashboard, request.url));
       }
       return NextResponse.next();
@@ -78,7 +80,7 @@ export function middleware(request: NextRequest) {
     const allowedDashboard = ROLE_TO_DASHBOARD[userRole];
     const requestedDashboard =
       DASHBOARD_ROUTES.find(
-        (route) => pathname === route || pathname.startsWith(`${route}/`)
+        (route) => pathname === route || pathname.startsWith(`${route}/`),
       ) ?? null;
 
     if (allowedDashboard && requestedDashboard !== allowedDashboard) {

@@ -26,7 +26,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
 import { authService } from "@/services";
-import { useAppDispatch, login } from "@/store";
+import { useAppDispatch, login, setUser } from "@/store";
 import { useRouter } from "next/navigation";
 import IconButton from "../atoms/IconButton";
 import { KeyRound } from "lucide-react";
@@ -66,7 +66,13 @@ export default function ResetPasswordForm() {
       toast.success(message);
       form.reset();
       const token = (response.data as { token?: string })?.token;
-      if (token) dispatch(login(token));
+      if (token) {
+        const userResponse = await authService.getUser(response.data);
+        if (userResponse.status === 200) {
+          dispatch(setUser(userResponse.data));
+        }
+        dispatch(login(token));
+      }
       router.push("/login");
     } else {
       const message =

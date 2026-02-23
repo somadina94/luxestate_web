@@ -3,6 +3,7 @@ import "../globals.css";
 import { ThemeProvider } from "@/context/theme-provider";
 import ReduxProvider from "@/context/redux-provider";
 import { Toaster } from "sonner";
+import Footer from "@/components/organisms/footer";
 
 export const metadata: Metadata = {
   title: "Luxestate",
@@ -25,6 +26,7 @@ export default function RootLayout({
         <main>
           {children}
           <Toaster />
+          <Footer />
         </main>
       </ReduxProvider>
     </ThemeProvider>
