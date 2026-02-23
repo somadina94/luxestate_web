@@ -1,3 +1,12 @@
+"use client";
+import { Button } from "@/components/ui/button";
+import { useLogout } from "@/hooks/use-logout";
+
 export default function SellerDashboardHomepage() {
-  return <div>Seller Dashboard Homepage</div>;
+  const logout = useLogout();
+  return (
+    <div>
+      <Button onClick={logout}>logout</Button>
+    </div>
+  );
 }

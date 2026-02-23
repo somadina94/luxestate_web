@@ -162,8 +162,7 @@ class AuthService {
         return {
           status: 0,
           data: null,
-          message:
-            "No response from server. Please check your connection.",
+          message: "No response from server. Please check your connection.",
         };
       }
       return {
@@ -219,8 +218,63 @@ class AuthService {
         },
       });
       return { status: response.status, data: response.data };
-    } catch (error) {
-      return { status: 0, data: null, message: (error as Error).message };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        return {
+          status: axiosError.response.status,
+          data: axiosError.response.data,
+          message:
+            (axiosError.response.data as { detail?: string })?.detail ||
+            "Verification failed",
+        };
+      } else if (axiosError.request) {
+        return {
+          status: 0,
+          data: null,
+          message: "No response from server. Please check your connection.",
+        };
+      } else {
+        return {
+          status: 0,
+          data: null,
+          message: axiosError.message || "An error occurred",
+        };
+      }
+    }
+  }
+
+  async getAllUsers(access_token: string) {
+    try {
+      const response = await axiosInstance.get("/admin/users", {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      return { status: response.status, data: response.data };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        return {
+          status: axiosError.response.status,
+          data: axiosError.response.data,
+          message:
+            (axiosError.response.data as { detail?: string })?.detail ||
+            "Error fetching users",
+        };
+      } else if (axiosError.request) {
+        return {
+          status: 0,
+          data: null,
+          message: "No response from server. Please check your connection.",
+        };
+      } else {
+        return {
+          status: 0,
+          data: null,
+          message: axiosError.message || "An error occurred",
+        };
+      }
     }
   }
 }

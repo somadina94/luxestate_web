@@ -26,7 +26,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
 import { authService } from "@/services";
-import { useAppDispatch, login } from "@/store";
+import { useAppDispatch, login, setUser } from "@/store";
 import { setAuthCookie } from "@/lib/auth-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -54,12 +54,17 @@ export default function LoginVerify() {
     if (response.status === 200 && response.data) {
       const accessToken = (response.data as { access_token?: string })
         ?.access_token;
+
       if (accessToken) {
         dispatch(login(accessToken));
         setAuthCookie(accessToken);
         const userResponse = await authService.getUser(accessToken);
         if (userResponse.status === 200 && userResponse.data) {
-          dispatch(login(response.data));
+          const userInfoResponse = await authService.getUser(accessToken);
+          if (userInfoResponse.status === 200) {
+            dispatch(setUser(userInfoResponse.data));
+          }
+          dispatch(login(response.data.access_token));
         }
         toast.success("Login verified successfully");
         form.reset();
