@@ -1,22 +1,38 @@
 "use client";
 import { useAppSelector, RootState, AuthState } from "@/store";
+import { useUnreadCount } from "@/hooks/use-unread-count";
 
 import { MessageCircle, Bell, User, ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 export default function DashboardHeader() {
-  const { user } = useAppSelector(
+  const { user, access_token } = useAppSelector(
     (state: RootState) => state.auth,
   ) as AuthState;
+  const { unreadCount } = useUnreadCount(access_token ?? null);
 
+  let path = "buyer-dashboard/messages";
+  if (user?.role === "buyer") {
+    path = "/buyer-dashboard/messages";
+  } else if (user?.role === "seller") {
+    path = "/seller-dashboard/messages";
+  } else if (user?.role === "admin") {
+    path = "/admin-dashboard/messages";
+  }
   return (
     <header className="text-center flex flex-row justify-end px-4 border-b h-30 sticky top-0 z-10 bg-background/90">
       <div className="flex flex-row justify-center gap-4 items-center max-w-48 w-full border-r">
-        <div className=" w-8 h-8 md:w-14 md:h-14 rounded-2xl bg-muted flex justify-center items-center relative">
+        <Link
+          href={path}
+          className=" w-8 h-8 md:w-14 md:h-14 rounded-2xl bg-muted flex justify-center items-center relative"
+        >
           <MessageCircle className="text-primary w-3 h-3 md:w-5 md:h-5" />
-          <p className="min-w-3 min-h-3 md:min-w-6 md:min-h-6  bg-destructive rounded-full text-white flex justify-center items-center text-[8px] md:text-sm absolute top-1 right-1">
-            22
-          </p>
-        </div>
+          {unreadCount > 0 && (
+            <p className="min-w-3 min-h-3 md:min-w-6 md:min-h-6  bg-destructive rounded-full text-white flex justify-center items-center text-[8px] md:text-sm absolute top-1 right-1">
+              {unreadCount > 99 ? "99+" : unreadCount}
+            </p>
+          )}
+        </Link>
         <div className=" w-8 h-8 md:w-14 md:h-14 rounded-2xl bg-muted flex justify-center items-center relative">
           <Bell size={24} className="text-primary w-3 h-3 md:w-5 md:h-5" />
           <p className="min-w-3 min-h-3 md:min-w-6 md:min-h-6  bg-destructive rounded-full text-white flex justify-center items-center text-[8px] md:text-sm absolute top-1 right-1">

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { propertyService } from "@/services";
+import { chatService, propertyService } from "@/services";
 import { useAppSelector, RootState, AuthState } from "@/store";
 import { Favorite, Property } from "@/types";
 import { formatDate } from "@/utils/helpers";
@@ -44,6 +44,7 @@ export default function PropertyDetail() {
       "https://images.unsplash.com/photo-1760434875920-2b7a79ea163a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isContactingAgent, setIsContactingAgent] = useState<boolean>(false);
   const router = useRouter();
   useEffect(() => {
     async function fetchProperty() {
@@ -106,6 +107,26 @@ export default function PropertyDetail() {
     } else {
       toast.error(res.message || "Failed to remove from favorites");
     }
+  }
+
+  async function handleContactAgent() {
+    setIsContactingAgent(true);
+    const res = await chatService.createConversation(
+      {
+        user_id: user?.id || 0,
+        agent_id: property?.agent_id || 0,
+        property_id: Number(id),
+        type: "user-agent",
+      },
+      access_token || "",
+    );
+    if (res.status === 200) {
+      toast.success("Agent contacted successfully");
+      router.push(`/buyer-dashboard/messages/${res.data.id}`);
+    } else {
+      toast.error(res.message || "Failed to contact agent");
+    }
+    setIsContactingAgent(false);
   }
 
   if (isLoading) {
@@ -281,7 +302,9 @@ export default function PropertyDetail() {
               title="Contact Agent"
               Icon={MailIcon}
               className="w-full"
-              onClick={() => {}}
+              onClick={handleContactAgent}
+              disabled={isContactingAgent}
+              isLoading={isContactingAgent}
             />
           </CardContent>
         </Card>
