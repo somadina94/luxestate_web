@@ -1,3 +1,36 @@
+/** Format message timestamp for chat: "10:30 AM", "Yesterday, 10:30 AM", or "Feb 24, 10:30 AM" */
+export function formatMessageTime(
+  date: string | number | Date | null | undefined,
+): string {
+  if (!date) return "";
+  const d = new Date(date);
+  const now = new Date();
+  const isToday =
+    d.getDate() === now.getDate() &&
+    d.getMonth() === now.getMonth() &&
+    d.getFullYear() === now.getFullYear();
+  const yesterday = new Date(now);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const isYesterday =
+    d.getDate() === yesterday.getDate() &&
+    d.getMonth() === yesterday.getMonth() &&
+    d.getFullYear() === yesterday.getFullYear();
+  const timeStr = d.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+  if (isToday) return timeStr;
+  if (isYesterday) return `Yesterday, ${timeStr}`;
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
 export function formatDate(
   date: string | number | Date | null | undefined,
 ): string | false {
