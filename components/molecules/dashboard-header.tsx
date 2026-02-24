@@ -1,23 +1,39 @@
 "use client";
 import { useAppSelector, RootState, AuthState } from "@/store";
 import { useUnreadCount } from "@/hooks/use-unread-count";
+import { useUnreadNotificationCount } from "@/hooks/use-unread-notification-count";
+import { useNotificationContext } from "@/context/notification-provider";
+import { useRouter } from "next/navigation";
 
 import { MessageCircle, Bell, User, ChevronDown } from "lucide-react";
 import Link from "next/link";
 
 export default function DashboardHeader() {
+  const router = useRouter();
   const { user, access_token } = useAppSelector(
     (state: RootState) => state.auth,
   ) as AuthState;
   const { unreadCount } = useUnreadCount(access_token ?? null);
+  const { unreadCount: unreadNotificationCount } =
+    useUnreadNotificationCount(access_token ?? null);
+  const { requestPermissionAndSubscribe } = useNotificationContext();
+
+  const handleBellClick = (e: React.MouseEvent) => {
+    requestPermissionAndSubscribe();
+    router.push(notificationsPath);
+  };
 
   let path = "buyer-dashboard/messages";
+  let notificationsPath = "/buyer-dashboard/notifications";
   if (user?.role === "buyer") {
     path = "/buyer-dashboard/messages";
+    notificationsPath = "/buyer-dashboard/notifications";
   } else if (user?.role === "seller") {
     path = "/seller-dashboard/messages";
+    notificationsPath = "/seller-dashboard/notifications";
   } else if (user?.role === "admin") {
     path = "/admin-dashboard/messages";
+    notificationsPath = "/admin-dashboard/notifications";
   }
   return (
     <header className="text-center flex flex-row justify-end px-4 border-b h-30 sticky top-0 z-10 bg-background/90">
@@ -33,12 +49,18 @@ export default function DashboardHeader() {
             </p>
           )}
         </Link>
-        <div className=" w-8 h-8 md:w-14 md:h-14 rounded-2xl bg-muted flex justify-center items-center relative">
+        <button
+          type="button"
+          onClick={handleBellClick}
+          className=" w-8 h-8 md:w-14 md:h-14 rounded-2xl bg-muted flex justify-center items-center relative"
+        >
           <Bell size={24} className="text-primary w-3 h-3 md:w-5 md:h-5" />
-          <p className="min-w-3 min-h-3 md:min-w-6 md:min-h-6  bg-destructive rounded-full text-white flex justify-center items-center text-[8px] md:text-sm absolute top-1 right-1">
-            22
-          </p>
-        </div>
+          {unreadNotificationCount > 0 && (
+            <p className="min-w-3 min-h-3 md:min-w-6 md:min-h-6  bg-destructive rounded-full text-white flex justify-center items-center text-[8px] md:text-sm absolute top-1 right-1">
+              {unreadNotificationCount > 99 ? "99+" : unreadNotificationCount}
+            </p>
+          )}
+        </button>
       </div>
       <div className="flex flex-row justify-between items-center p-4">
         <div className="flex flex-row justify-between items-center gap-4">

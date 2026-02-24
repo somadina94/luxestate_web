@@ -13,7 +13,10 @@ interface ChatItemProps {
   onLastMessageTime?: (conversationId: number, timestamp: string) => void;
 }
 
-export default function ChatItem({ conversation, onLastMessageTime }: ChatItemProps) {
+export default function ChatItem({
+  conversation,
+  onLastMessageTime,
+}: ChatItemProps) {
   const router = useRouter();
   const { user, access_token } = useAppSelector(
     (state: RootState) => state.auth,
@@ -23,7 +26,11 @@ export default function ChatItem({ conversation, onLastMessageTime }: ChatItemPr
   const lastMessageTime = lastMessage?.timestamp;
 
   useEffect(() => {
-    if (conversation.id != null && lastMessage?.timestamp && onLastMessageTime) {
+    if (
+      conversation.id != null &&
+      lastMessage?.timestamp &&
+      onLastMessageTime
+    ) {
       onLastMessageTime(conversation.id, lastMessage.timestamp);
     }
   }, [conversation.id, lastMessage?.timestamp, onLastMessageTime]);
@@ -32,7 +39,7 @@ export default function ChatItem({ conversation, onLastMessageTime }: ChatItemPr
     lastMessage && lastMessage.sender_id !== user?.id && !lastMessage.is_read;
   return (
     <div
-      className={`cursor-pointer p-1 rounded-md shadow-sm ${isUnreadLastMessage ? "bg-accent" : ""}`}
+      className={`cursor-pointer p-1 hover:bg-primary/10 transition-all duration-300 max-w-200 border rounded-md shadow-sm ${isUnreadLastMessage ? "bg-accent" : ""} `}
       onClick={() => {
         if (user?.role === "buyer") {
           router.push(`/buyer-dashboard/messages/${conversation.id}`);
