@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { WebSocketProvider } from "@/context/websocker-provider";
+import { NotificationProvider } from "@/context/notification-provider";
 import { getToken } from "@/lib/auth";
 
 const geistSans = Geist({
@@ -31,7 +32,11 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <WebSocketProvider token={token}>{children}</WebSocketProvider>
+        <WebSocketProvider token={token}>
+            <NotificationProvider accessToken={token || null}>
+              {children}
+            </NotificationProvider>
+          </WebSocketProvider>
         <Toaster />
       </body>
     </html>
