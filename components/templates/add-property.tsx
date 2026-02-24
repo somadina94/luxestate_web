@@ -225,7 +225,7 @@ export default function AddProperty() {
   } = form;
 
   return (
-    <Card className="w-lg mx-auto">
+    <Card className="max-w-lg mx-auto">
       <CardHeader>
         <CardTitle>Add Property</CardTitle>
       </CardHeader>

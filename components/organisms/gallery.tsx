@@ -14,11 +14,14 @@ export default function Gallery() {
   const [images, setImages] = useState<PropertyImage[]>([]);
   const router = useRouter();
   useEffect(() => {
+    const propertyId = id ? Number(id) : NaN;
+    if (Number.isNaN(propertyId)) return;
+
     const fetchImages = async () => {
-      const res = await propertyService.getPropertyImages(Number(id));
-      if (res.status === 200) {
+      const res = await propertyService.getPropertyImages(propertyId);
+      if (res.status === 200 && Array.isArray(res.data)) {
         setImages(res.data);
-      } else {
+      } else if (res.status !== 200) {
         toast.error(res.message || "Failed to fetch images");
       }
     };
@@ -42,7 +45,7 @@ export default function Gallery() {
             <Image
               key={image.id}
               src={image.file_url}
-              alt={image.alt_text}
+              alt={image.alt_text ?? "Property image"}
               width={800}
               height={600}
               className="rounded-lg cursor-pointer"

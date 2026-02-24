@@ -31,11 +31,10 @@ export default function RootLayout({
         <DashboardHeader />
         <SidebarProvider>
           <SidebarComponent />
-          <SidebarInset />
-          <main className="w-full">
+          <SidebarInset>
             <SidebarTrigger />
             {children}
-          </main>
+          </SidebarInset>
         </SidebarProvider>
       </ReduxProvider>
     </ThemeProvider>
