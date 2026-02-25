@@ -62,7 +62,7 @@ export default function ChatItem({
           {conversation.property_title}
         </p>
         <p className="text-muted-foreground text-sm">{`${trimToLength(lastMessage?.content ?? "", 60)}...`}</p>
-        <p className="text-muted-foreground text-sm absolute bottom-4 right-4">{`${formatMessageTime(lastMessageTime)}`}</p>
+        <p className="text-muted-foreground text-sm absolute top-4 right-4">{`${formatMessageTime(lastMessageTime)}`}</p>
       </div>
     </div>
   );
