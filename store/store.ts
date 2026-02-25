@@ -12,7 +12,6 @@ import {
 } from "redux-persist";
 import { storage } from "@/lib/storage";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import favReducer from "./favSlice";
 
 const persistConfig = {
   key: "root",
@@ -21,7 +20,6 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  fav: favReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
