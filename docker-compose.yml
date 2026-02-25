@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  luxestate-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
+        - NEXT_PUBLIC_VAPID_PUBLIC_KEY=${NEXT_PUBLIC_VAPID_PUBLIC_KEY}
+        # - NEXT_PUBLIC_VAPID_PRIVATE_KEY=${NEXT_PUBLIC_VAPID_PRIVATE_KEY}
+    container_name: luxestate-client
+    ports:
+      - "6010:6010"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - luxestate-client-network
+
+networks:
+  luxestate-client-network:
+    driver: bridge
