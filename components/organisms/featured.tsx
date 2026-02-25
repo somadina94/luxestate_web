@@ -55,8 +55,10 @@ export default function Featured() {
 
   return (
     <div className="relative px-2 md:px-24 py-24">
-      <div className="max-w-200 absolute mx-auto flex flex-row items-center justify-center text-center rounded-lg h-24 p-4 left-0 right-0 top-[-48] bg-[#ffc078] shadow-sm">
-        <h4 className="text-2xl text-white">FEATURED PROPERTIES</h4>
+      <div className="max-w-200 absolute mx-auto flex flex-row  from-[#ae3ec9] via-[#1971c2] to-orange-500 items-center justify-center text-center rounded-lg h-24 p-4 left-0 right-0 top-[-48] bg-linear-to-r shadow-sm">
+        <h4 className="text-2xl text-white  bg-clip-text  font-semibold">
+          FEATURED PROPERTIES
+        </h4>
       </div>
       {/* Properties Grid */}
       {loading ? (

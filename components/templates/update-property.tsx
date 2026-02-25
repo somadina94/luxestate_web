@@ -288,7 +288,7 @@ export default function UpdateProperty() {
 
   if (loading) {
     return (
-      <Card className="w-lg mx-auto">
+      <Card className="maxw-lg mx-auto">
         <CardContent className="pt-6">
           <p className="text-muted-foreground">Loading property...</p>
         </CardContent>
@@ -297,7 +297,7 @@ export default function UpdateProperty() {
   }
 
   return (
-    <Card className="w-lg mx-auto">
+    <Card className="max-w-lg mx-auto">
       <CardHeader>
         <CardTitle>Update Property</CardTitle>
       </CardHeader>
