@@ -14,8 +14,9 @@ export default function DashboardHeader() {
     (state: RootState) => state.auth,
   ) as AuthState;
   const { unreadCount } = useUnreadCount(access_token ?? null);
-  const { unreadCount: unreadNotificationCount } =
-    useUnreadNotificationCount(access_token ?? null);
+  const { unreadCount: unreadNotificationCount } = useUnreadNotificationCount(
+    access_token ?? null,
+  );
   const { requestPermissionAndSubscribe } = useNotificationContext();
 
   const handleBellClick = (e: React.MouseEvent) => {
