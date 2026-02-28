@@ -72,7 +72,9 @@ export function NotificationProvider({
         scope: "/",
       });
       await reg.update();
-      const payload = await subscribeToPush(VAPID_KEY, { skipPermission: true });
+      const payload = await subscribeToPush(VAPID_KEY, {
+        skipPermission: true,
+      });
       if (!payload) return;
       const res = await notificationService.subscribeWebPush(
         { subscription: payload },
