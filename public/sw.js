@@ -25,16 +25,21 @@ self.addEventListener("notificationclick", (event) => {
   const path =
     data.path ||
     "/buyer-dashboard/notifications";
+  const fullUrl = new URL(path, self.location.origin).href;
+
   event.waitUntil(
     self.clients
       .matchAll({ type: "window", includeUncontrolled: true })
       .then((clientList) => {
-        if (clientList.length > 0) {
-          const client = clientList[0];
-          client.navigate(path);
-          client.focus();
+        const sameOrigin = clientList.filter(
+          (c) => c.url && new URL(c.url).origin === self.location.origin
+        );
+        const target = sameOrigin.length > 0 ? sameOrigin[0] : null;
+        if (target) {
+          target.navigate(fullUrl);
+          target.focus();
         } else if (self.clients.openWindow) {
-          self.clients.openWindow(new URL(path, self.location.origin));
+          self.clients.openWindow(fullUrl);
         }
       }),
   );
