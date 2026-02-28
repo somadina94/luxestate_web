@@ -31,9 +31,8 @@ export const WebSocketProvider = ({
   useEffect(() => {
     if (!token) return;
 
-    const ws = new WebSocket(
-      `wss://luxestatebe.jahbyte.com/ws/multi?token=${token}`,
-    );
+    const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_BASE_URL}${token}`);
+    // const ws = new WebSocket(`ws://localhost:8000/ws/multi?token=${token}`);
 
     socketRef.current = ws;
 

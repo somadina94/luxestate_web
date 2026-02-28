@@ -14,4 +14,16 @@ export function clearAuthCookie() {
   document.cookie = `${AUTH_COOKIE_NAME}=; path=/; max-age=0`;
 }
 
+export function getAuthCookie() {
+  return (
+    document.cookie.split("; ").reduce(
+      (acc, cookie) => {
+        const [key, value] = cookie.split("=");
+        return { ...acc, [key]: value };
+      },
+      {} as Record<string, string>,
+    ) || null
+  );
+}
+
 export { AUTH_COOKIE_NAME };
