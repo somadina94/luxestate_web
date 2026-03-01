@@ -5,6 +5,8 @@ import { Favorite } from "./favorite";
 import { Message, ChatWSPayload } from "./message";
 import { Conversation } from "./conversation";
 import { Notification } from "./notification";
+import { Ticket } from "./ticket";
+import { TicketMessage } from "./ticket-message";
 
 export {
   type User,
@@ -15,4 +17,6 @@ export {
   type ChatWSPayload,
   type Conversation,
   type Notification,
+  type Ticket,
+  type TicketMessage,
 };
