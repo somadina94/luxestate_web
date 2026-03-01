@@ -13,7 +13,7 @@ export default function TicketWindowTemplate() {
   return (
     <div className="h-full min-h-0 flex flex-col">
       <TicketWindow
-        key={id}
+        key={id as string}
         ticketId={Number(id)}
         userId={user?.id ?? 0}
         accessToken={access_token}

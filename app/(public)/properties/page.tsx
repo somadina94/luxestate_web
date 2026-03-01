@@ -1,9 +1,9 @@
-import SellerProperties from "@/components/templates/seller-properties";
+import AdminProperties from "@/components/templates/admin-properties";
 
 export default function PropertiesPage() {
   return (
     <div className="p-4">
-      <SellerProperties />
+      <AdminProperties />
     </div>
   );
 }
