@@ -35,9 +35,9 @@ export default async function RootLayout({
         <WebSocketProvider token={token}>
             <NotificationProvider accessToken={token || null}>
               {children}
+              <Toaster />
             </NotificationProvider>
           </WebSocketProvider>
-        <Toaster />
       </body>
     </html>
   );

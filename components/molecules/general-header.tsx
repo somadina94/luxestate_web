@@ -25,7 +25,7 @@ export default function GeneralHeader() {
       <div className="flex flex-row items-center gap-2 md:gap-4 text-sm md:text-lg">
         <Link href="/">Home</Link>
         <Link href="/about">About Us</Link>
-        <Link href="/">Properties</Link>
+        <Link href="/properties">Properties</Link>
       </div>
       <Button asChild>
         <Link href={path} className="text-white">
