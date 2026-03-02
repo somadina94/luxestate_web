@@ -18,7 +18,7 @@ export default function GeneralHeader() {
     path = "/seller-dashboard";
   }
   return (
-    <header className="px-2 text-white bg-transparent flex flex-row items-center justify-between py-2 absolute top-6 right-0 left-0 md:right-24 md:left-24 border rounded-lg">
+    <header className="sticky top-0 z-50 left-0 right-0 flex flex-row bg-linear-to-r items-center justify-between px-2 py-2 from-[#d9480f] via-[#1c7ed6] to-orange-500 text-white">
       <Link href="/" className="font-bold text-lg md:text-3xl">
         LUXESTATE
       </Link>

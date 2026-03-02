@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import "../globals.css";
 import { ThemeProvider } from "@/context/theme-provider";
 import ReduxProvider from "@/context/redux-provider";
-  
+import GeneralHeader from "@/components/molecules/general-header";
+
 import Footer from "@/components/organisms/footer";
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ export default function RootLayout({
     >
       <ReduxProvider>
         <main>
+          <GeneralHeader />
           {children}
           <Footer />
         </main>
