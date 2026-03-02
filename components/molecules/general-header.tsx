@@ -23,9 +23,9 @@ export default function GeneralHeader() {
         LUXESTATE
       </Link>
       <div className="flex flex-row items-center gap-2 md:gap-4 text-[10px] md:text-lg">
-        <Link href="/">Home</Link>
-        <Link href="/about">About Us</Link>
         <Link href="/properties">Properties</Link>
+        <Link href="/features">Features</Link>
+        <Link href="/about">About Us</Link>
       </div>
       <Button asChild>
         <Link href={path} className="text-white">
