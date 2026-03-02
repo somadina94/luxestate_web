@@ -9,14 +9,14 @@ export default function Footer() {
         <nav className="flex flex-col gap-2">
           <h2 className="text-lg text-gray-500">Home</h2>
           <Link href="/">Hero section</Link>
-          <Link href="/">Features</Link>
+          <Link href="/about#about-features-heading">Features</Link>
           <Link href="/">Properties</Link>
           <Link href="/">Testimonials</Link>
           <Link href="/">Faqs</Link>
         </nav>
         <nav className="flex flex-col gap-2">
           <h2 className="text-lg text-gray-500">About us</h2>
-          <Link href="/">Our story</Link>
+          <Link href="/about">Our story</Link>
           <Link href="/">Our works</Link>
           <Link href="/">How it works</Link>
           <Link href="/">Our team</Link>

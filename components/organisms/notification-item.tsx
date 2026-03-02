@@ -33,7 +33,7 @@ export default function NotificationItem({
       onClick={() => {
         router.push(path);
       }}
-      className={`flex flex-row justify-between items-center cursor-pointer hover:bg-primary/10 transition-all duration-300 max-w-200 border  gap-2 p-2 rounded-md shadow-sm dark:bg-muted ${isUnread ? "bg-primary dark:bg-primary/20" : ""}`}
+      className={`flex flex-row justify-between items-center cursor-pointer hover:bg-primary transition-all duration-300 max-w-200 border  gap-2 p-2 rounded-md shadow-sm dark:bg-muted ${isUnread ? "bg-primary dark:bg-primary/20" : ""}`}
     >
       <div className="flex flex-col">
         <h3 className="text-lg font-medium">{notification.title}</h3>
