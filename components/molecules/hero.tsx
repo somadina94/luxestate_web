@@ -21,7 +21,7 @@ export default function Hero() {
   }
   return (
     <section
-      className="relative min-h-screen w-full flex items-center bg-cover bg-center px-4 md:px-24"
+      className="min-h-screen w-full flex items-center bg-cover bg-center px-4 md:px-24"
       style={{
         backgroundImage: `url(${heroBg.src})`,
         backgroundColor: `rgba(0,0,0,0.7)`,
@@ -29,7 +29,7 @@ export default function Hero() {
     >
       <div className="absolute inset-0 bg-black/60" />
       <div className="z-10">
-        <GeneralHeader />
+        {/* <GeneralHeader /> */}
         {/* <div className="absolute inset-0 bg-black/90" /> */}
 
         <div className="max-w-[500px]">
