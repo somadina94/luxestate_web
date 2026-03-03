@@ -48,11 +48,6 @@ export const ADMIN_MENU_ITEMS: MenuItem[] = [
     url: "/admin-dashboard/tickets",
     icon: TicketIcon,
   },
-  {
-    title: "Home",
-    url: "/",
-    icon: HouseIcon,
-  },
 ];
 
 export const BUYER_MENU_ITEMS: MenuItem[] = [
@@ -86,11 +81,6 @@ export const BUYER_MENU_ITEMS: MenuItem[] = [
     url: "/buyer-dashboard/settings",
     icon: SettingsIcon,
   },
-  {
-    title: "Home",
-    url: "/",
-    icon: HouseIcon,
-  },
 ];
 
 export const SELLER_MENU_ITEMS: MenuItem[] = [
@@ -123,10 +113,5 @@ export const SELLER_MENU_ITEMS: MenuItem[] = [
     title: "Settings",
     url: "/seller-dashboard/settings",
     icon: SettingsIcon,
-  },
-  {
-    title: "Home",
-    url: "/",
-    icon: HouseIcon,
   },
 ];

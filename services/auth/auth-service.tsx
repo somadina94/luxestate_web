@@ -277,6 +277,82 @@ class AuthService {
       }
     }
   }
+
+  async deactivateUser(access_token: string) {
+    try {
+      const response = await axiosInstance.delete("/users/deactivate", {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      return {
+        status: response.status,
+        data: response.data,
+        message: response.data?.message,
+      };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        return {
+          status: axiosError.response.status,
+          data: axiosError.response.data,
+          message:
+            (axiosError.response.data as { message?: string })?.message ||
+            "An error occurred",
+        };
+      }
+      return {
+        status: 0,
+        data: null,
+        message: axiosError.message || "An error occurred",
+      };
+    }
+  }
+
+  async updatePassword(
+    access_token: string,
+    current_password: string,
+    new_password: string,
+    confirm_password: string,
+  ) {
+    console.log(access_token, current_password, new_password, confirm_password);
+    try {
+      const response = await axiosInstance.patch(
+        `/auth/update_password?current_password=${current_password}&new_password=${new_password}&confirm_password=${confirm_password}`,
+        undefined,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        },
+      );
+      return { status: response.status, data: response.data };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        return {
+          status: axiosError.response.status,
+          data: axiosError.response.data,
+          message:
+            (axiosError.response.data as { detail?: string })?.detail ||
+            "Error updating password",
+        };
+      } else if (axiosError.request) {
+        return {
+          status: 0,
+          data: null,
+          message: "No response from server. Please check your connection.",
+        };
+      } else {
+        return {
+          status: 0,
+          data: null,
+          message: axiosError.message || "An error occurred",
+        };
+      }
+    }
+  }
 }
+
 const authService = new AuthService();
 export default authService;

@@ -43,7 +43,7 @@ export default function TicketForm() {
 
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     const res = await ticketService.createTicket(data, access_token as string);
-    if (res.status === 200) {
+    if (res.status === 201) {
       toast.success("Ticket created successfully");
       let path = "/tickets";
       if (user?.role === "admin") {

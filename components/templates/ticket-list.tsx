@@ -46,7 +46,7 @@ export default function TicketList() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mx-auto max-w-3xl w-full">
       <div className="flex flex-row justify-between items-center">
         <h1 className="text-2xl font-bold">Tickets</h1>
         <IconButton

@@ -41,7 +41,7 @@ export default function NotificationsList() {
     );
   }
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mx-auto max-w-3xl w-full">
       <h1 className="text-2xl font-bold">Notifications</h1>
       {notifications.map((notification) => (
         <NotificationItem key={notification.id} notification={notification} />
