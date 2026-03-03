@@ -43,9 +43,7 @@ export default async function RootLayout({
           <ReduxProvider>
             <WebSocketProvider token={token}>
               <NotificationProvider accessToken={token || null}>
-                <main className="">
-                  {children}
-                </main>
+                <main className="">{children}</main>
                 <Toaster />
               </NotificationProvider>
             </WebSocketProvider>
