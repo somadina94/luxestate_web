@@ -24,15 +24,17 @@ export default function TicketItem({ ticket }: TicketItemProps) {
   }
   return (
     <div
-      className={`flex flex-col relative cursor-pointer hover:bg-primary/10 transition-all duration-300 p-2 rounded-md shadow-sm ${ticket.status === "open" || ticket.status === "in_progress" ? "bg-green-800" : "bg-gray-500"}`}
+      className={`flex flex-row justify-between items-center relative cursor-pointer bg-primary/20 hover:bg-primary/50 dark:hover:bg-primary/50 transition-all duration-300 p-2 rounded-md shadow-sm ${ticket.status === "open" || ticket.status === "in_progress" ? "bg-green-800" : "bg-gray-500"}`}
       onClick={() => router.push(path)}
     >
-      <p className="font-medium">{ticket.title}</p>
-      <p className="text-muted-foreground text-sm">{ticket.status}</p>
+      <div className="flex flex-col">
+        <p className="font-medium">{ticket.title}</p>
+        <p className="text-muted-foreground text-sm">{ticket.status}</p>
+        <p className="text-muted-foreground text-sm">
+          {ticket.user?.first_name} {ticket.user?.last_name}
+        </p>
+      </div>
       <p className="text-muted-foreground text-sm">
-        {ticket.user?.first_name} {ticket.user?.last_name}
-      </p>
-      <p className="text-muted-foreground text-sm absolute top-0 bottom-0 right-4">
         {formatMessageTime(ticket.created_at)}
       </p>
     </div>

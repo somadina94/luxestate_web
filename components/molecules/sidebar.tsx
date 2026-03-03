@@ -23,7 +23,7 @@ import { useAppSelector, RootState, AuthState } from "@/store";
 import { useTheme } from "next-themes";
 import { LightDarkToggle } from "../atoms/light-dark-toggle";
 import { useRouter } from "next/navigation";
-import { LogOut } from "lucide-react";
+import { HouseIcon, LogOut } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useLogout } from "@/hooks/use-logout";
 
@@ -51,11 +51,12 @@ export default function SidebarComponent() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Image
-                src={theme.theme === "light" ? logoLight : logoDark}
-                alt="logo"
-                className="w-full h-full"
-              />
+              <div className="flex flex-row items-center gap-2">
+                <HouseIcon size={24} />
+                <Link href="/" className="text-2xl font-bold">
+                  LUXESTATE
+                </Link>
+              </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -63,7 +64,7 @@ export default function SidebarComponent() {
       <SidebarContent>
         <SidebarMenu>
           {menuItems.map((item) => {
-            const isActive = pathname === item.url;
+            const isActive = pathname.includes(item.url);
             return (
               <SidebarMenuItem
                 key={item.title}

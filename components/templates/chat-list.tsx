@@ -15,14 +15,19 @@ export default function ChatList() {
 
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(false);
-  const [lastMessageTimes, setLastMessageTimes] = useState<Record<number, number>>({});
+  const [lastMessageTimes, setLastMessageTimes] = useState<
+    Record<number, number>
+  >({});
 
-  const onLastMessageTime = useCallback((conversationId: number, timestamp: string) => {
-    const ms = new Date(timestamp).getTime();
-    setLastMessageTimes((prev) =>
-      prev[conversationId] === ms ? prev : { ...prev, [conversationId]: ms }
-    );
-  }, []);
+  const onLastMessageTime = useCallback(
+    (conversationId: number, timestamp: string) => {
+      const ms = new Date(timestamp).getTime();
+      setLastMessageTimes((prev) =>
+        prev[conversationId] === ms ? prev : { ...prev, [conversationId]: ms },
+      );
+    },
+    [],
+  );
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -39,14 +44,15 @@ export default function ChatList() {
   }, [access_token]);
 
   const sortedConversations = [...conversations].sort(
-    (a, b) => (lastMessageTimes[b.id!] ?? 0) - (lastMessageTimes[a.id!] ?? 0)
+    (a, b) => (lastMessageTimes[b.id!] ?? 0) - (lastMessageTimes[a.id!] ?? 0),
   );
 
   if (loading) {
     return <Loading />;
   }
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mx-auto max-w-3xl w-full">
+      <h1 className="text-2xl font-bold">Chats</h1>
       {sortedConversations.map((conversation) => (
         <ChatItem
           key={conversation.id}
