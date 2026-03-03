@@ -3,6 +3,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarMenu,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarFooter,
@@ -26,15 +27,25 @@ import { useRouter } from "next/navigation";
 import { HouseIcon, LogOut } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useLogout } from "@/hooks/use-logout";
+import { useUnreadCount } from "@/hooks/use-unread-count";
+import { useUnreadNotificationCount } from "@/hooks/use-unread-notification-count";
+import { useOpenTicketCount } from "@/hooks/use-open-ticket-count";
 
 export default function SidebarComponent() {
   const theme = useTheme();
   const pathname = usePathname();
   const router = useRouter();
   const logout = useLogout();
-  const { user } = useAppSelector(
+  const { user, access_token } = useAppSelector(
     (state: RootState) => state.auth,
   ) as AuthState;
+  const { unreadCount } = useUnreadCount(access_token ?? null);
+  const { unreadCount: unreadNotificationCount } = useUnreadNotificationCount(
+    access_token ?? null,
+  );
+  const { openCount: openTicketCount } = useOpenTicketCount(
+    access_token ?? null,
+  );
 
   let menuItems: MenuItem[] = [] as MenuItem[];
   if (user?.role === "admin") {
@@ -65,10 +76,20 @@ export default function SidebarComponent() {
         <SidebarMenu>
           {menuItems.map((item) => {
             const isActive = pathname.includes(item.url);
+            const messageCount =
+              item.title === "Messages" ? unreadCount : undefined;
+            const notificationCount =
+              item.title === "Notifications"
+                ? unreadNotificationCount
+                : undefined;
+            const ticketCount =
+              item.title === "Tickets" ? openTicketCount : undefined;
+            const badgeCount =
+              messageCount ?? notificationCount ?? ticketCount ?? 0;
             return (
               <SidebarMenuItem
                 key={item.title}
-                className="border-b cursor-pointer"
+                className="relative border-b cursor-pointer"
               >
                 <SidebarMenuButton
                   asChild
@@ -87,6 +108,11 @@ export default function SidebarComponent() {
                     </span>
                   </Link>
                 </SidebarMenuButton>
+                {badgeCount > 0 && (
+                  <SidebarMenuBadge className="bg-destructive text-white rounded-full min-w-5 h-5 text-[10px] font-semibold">
+                    {badgeCount > 99 ? "99+" : badgeCount}
+                  </SidebarMenuBadge>
+                )}
               </SidebarMenuItem>
             );
           })}

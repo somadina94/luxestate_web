@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import ChatWindowTemplate from "@/components/templates/chat-window";
+
+export const metadata: Metadata = {
+  title: "Conversation",
+  description: "Chat with seller about a property.",
+};
 
 export default function ChatWindowPage() {
   return (
