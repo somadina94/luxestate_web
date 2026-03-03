@@ -48,8 +48,11 @@ export default function PropertyItem({ property }: propertyItemProps) {
       </span>
       <span className="block border-b px-2">Built - {property.year_built}</span>
       <div className="flex flex-row justify-between items-center">
-        <span className="block px-2 w-1/2 border-r">{property.address}</span>
-        <span className="block px-2 w-1/2">
+        <span className="block px-2 w-1/2 border-r text-[12px] text-gray-500">
+          {property?.address}, {property?.city}, {property?.state},{" "}
+          {property?.zip_code}, {property?.country}
+        </span>
+        <span className="block px-2 w-1/2 text-[12px] text-gray-500">
           Added on {`${formatDate(property.created_at)}`}
         </span>
       </div>

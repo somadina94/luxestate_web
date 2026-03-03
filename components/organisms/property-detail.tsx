@@ -46,6 +46,7 @@ export default function PropertyDetail() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isContactingAgent, setIsContactingAgent] = useState<boolean>(false);
   const router = useRouter();
+  const [isDeletingProperty, setIsDeletingProperty] = useState<boolean>(false);
   useEffect(() => {
     async function fetchProperty() {
       setIsLoading(true);
@@ -129,6 +130,21 @@ export default function PropertyDetail() {
     setIsContactingAgent(false);
   }
 
+  async function deleteProperty() {
+    setIsDeletingProperty(true);
+    const res = await propertyService.deleteProperty(
+      Number(id),
+      access_token || "",
+    );
+    if (res.status === 204) {
+      toast.success("Property deleted successfully");
+      router.push(`/${user?.role}-dashboard/properties`);
+    } else {
+      toast.error(res.message || "Failed to delete property");
+    }
+    setIsDeletingProperty(false);
+  }
+
   if (isLoading) {
     return <Loading />;
   }
@@ -155,8 +171,8 @@ export default function PropertyDetail() {
             <span className="text-sm text-primary">
               {property?.currency} {formatAmount(property?.price || 0)}
             </span>
-            <span className="text-sm text-gray-500">
-              {property?.address}, {property?.city}, {property?.state}{" "}
+            <span className="text-[10px] text-gray-500">
+              {property?.address}, {property?.city}, {property?.state},{" "}
               {property?.zip_code}, {property?.country}
             </span>
             <span className="text-sm text-gray-500">
@@ -290,6 +306,8 @@ export default function PropertyDetail() {
                 title="Delete Property"
                 Icon={TrashIcon}
                 variant="destructive"
+                onClick={deleteProperty}
+                isLoading={isDeletingProperty}
               />
             </div>
           </CardContent>
