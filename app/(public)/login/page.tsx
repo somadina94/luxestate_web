@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import LoginForm from "@/components/templates/login-form";
+
+export const metadata: Metadata = {
+  title: "Login",
+  description: "Sign in to your Luxestate account.",
+};
 
 export default function LoginPage() {
   return (

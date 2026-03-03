@@ -5,8 +5,15 @@ import { useUnreadNotificationCount } from "@/hooks/use-unread-notification-coun
 import { useNotificationContext } from "@/context/notification-provider";
 import { useRouter } from "next/navigation";
 
-import { MessageCircle, Bell, User, ChevronDown } from "lucide-react";
+import {
+  MessageCircle,
+  Bell,
+  TicketIcon,
+  User,
+  ChevronDown,
+} from "lucide-react";
 import Link from "next/link";
+import { useOpenTicketCount } from "@/hooks/use-open-ticket-count";
 
 export default function DashboardHeader() {
   const router = useRouter();
@@ -15,6 +22,9 @@ export default function DashboardHeader() {
   ) as AuthState;
   const { unreadCount } = useUnreadCount(access_token ?? null);
   const { unreadCount: unreadNotificationCount } = useUnreadNotificationCount(
+    access_token ?? null,
+  );
+  const { openCount: openTicketCount } = useOpenTicketCount(
     access_token ?? null,
   );
   const { requestPermissionAndSubscribe } = useNotificationContext();
@@ -26,19 +36,23 @@ export default function DashboardHeader() {
 
   let path = "buyer-dashboard/messages";
   let notificationsPath = "/buyer-dashboard/notifications";
+  let ticketsPath = "/buyer-dashboard/tickets";
   if (user?.role === "buyer") {
     path = "/buyer-dashboard/messages";
     notificationsPath = "/buyer-dashboard/notifications";
+    ticketsPath = "/buyer-dashboard/tickets";
   } else if (user?.role === "seller") {
     path = "/seller-dashboard/messages";
     notificationsPath = "/seller-dashboard/notifications";
+    ticketsPath = "/seller-dashboard/tickets";
   } else if (user?.role === "admin") {
     path = "/admin-dashboard/messages";
     notificationsPath = "/admin-dashboard/notifications";
+    ticketsPath = "/admin-dashboard/tickets";
   }
   return (
     <header className="text-center flex flex-row justify-end px-4 border-b h-30 sticky top-0 z-10 bg-background/90">
-      <div className="flex flex-row justify-center gap-4 items-center max-w-48 w-full border-r">
+      <div className="flex flex-row justify-center gap-4 items-center max-w-60 w-full border-r mr-4">
         <Link
           href={path}
           className=" w-8 h-8 md:w-14 md:h-14 rounded-2xl bg-muted flex justify-center items-center relative"
@@ -53,7 +67,7 @@ export default function DashboardHeader() {
         <button
           type="button"
           onClick={handleBellClick}
-          className=" w-8 h-8 md:w-14 md:h-14 rounded-2xl bg-muted flex justify-center items-center relative"
+          className=" w-8 h-8 md:w-14 md:h-14 cursor-pointer rounded-2xl bg-muted flex justify-center items-center relative"
         >
           <Bell size={24} className="text-primary w-3 h-3 md:w-5 md:h-5" />
           {unreadNotificationCount > 0 && (
@@ -62,6 +76,17 @@ export default function DashboardHeader() {
             </p>
           )}
         </button>
+        <Link
+          href={ticketsPath}
+          className=" w-8 h-8 md:w-14 md:h-14 rounded-2xl bg-muted flex justify-center items-center relative"
+        >
+          <TicketIcon className="text-primary w-3 h-3 md:w-5 md:h-5" />
+          {openTicketCount > 0 && (
+            <p className="min-w-3 min-h-3 md:min-w-6 md:min-h-6  bg-destructive rounded-full text-white flex justify-center items-center text-[8px] md:text-sm absolute top-1 right-1">
+              {openTicketCount > 99 ? "99+" : openTicketCount}
+            </p>
+          )}
+        </Link>
       </div>
       <div className="flex flex-row justify-between items-center p-4">
         <div className="flex flex-row justify-between items-center gap-4">

@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import TicketWindowTemplate from "@/components/templates/ticket-window";
+
+export const metadata: Metadata = {
+  title: "Ticket",
+  description: "View and reply to support ticket.",
+};
 
 export default function TicketDetailPage() {
   return (

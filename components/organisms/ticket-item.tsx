@@ -22,9 +22,12 @@ export default function TicketItem({ ticket }: TicketItemProps) {
   } else if (user?.role === "admin") {
     path = `/admin-dashboard/tickets/${ticket.id}`;
   }
+  const isOpenOrInProgress =
+    ticket.status === "open" || ticket.status === "in_progress";
+
   return (
     <div
-      className={`flex flex-row justify-between items-center relative cursor-pointer bg-primary/20 hover:bg-primary/50 dark:hover:bg-primary/50 transition-all duration-300 p-2 rounded-md shadow-sm ${ticket.status === "open" || ticket.status === "in_progress" ? "bg-green-800" : "bg-gray-500"}`}
+      className={`flex flex-row justify-between items-center relative cursor-pointer transition-all duration-300 p-2 rounded-md shadow-sm border ${isOpenOrInProgress ? "bg-gradient-to-br from-[#d9480f]/90 via-[#1c7ed6]/90 to-orange-500/90 hover:from-[#d9480f] hover:via-[#1c7ed6] hover:to-orange-500 text-white [&_.text-muted-foreground]:text-white/90" : "bg-primary/20 hover:bg-primary/50 dark:hover:bg-primary/50"}`}
       onClick={() => router.push(path)}
     >
       <div className="flex flex-col">

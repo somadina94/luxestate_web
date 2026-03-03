@@ -3,8 +3,10 @@ import AboutFeatures from "@/components/organisms/about-features";
 import AboutRoles from "@/components/organisms/about-roles";
 import AboutCta from "@/components/organisms/about-cta";
 
-export const metadata = {
-  title: "About | Luxestate",
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About",
   description:
     "Learn about Luxestate: property search, realtime chat, seller subscriptions, tickets, notifications, and roles for buyers, sellers, and admins.",
 };
