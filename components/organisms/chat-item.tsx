@@ -39,7 +39,7 @@ export default function ChatItem({
     lastMessage && lastMessage.sender_id !== user?.id && !lastMessage.is_read;
   return (
     <div
-      className={`cursor-pointer p-2 bg-primary/20 hover:bg-primary/50 dark:hover:bg-primary/50 transition-all duration-300 max-w-200 border rounded-md shadow-sm ${isUnreadLastMessage ? "bg-accent" : ""} `}
+      className={`cursor-pointer p-2 transition-all duration-300 max-w-200 border rounded-md shadow-sm ${isUnreadLastMessage ? "bg-green-800 hover:bg-green-700" : "bg-primary/20 hover:bg-primary/50 dark:hover:bg-primary/50"} `}
       onClick={() => {
         if (user?.role === "buyer") {
           router.push(`/buyer-dashboard/messages/${conversation.id}`);

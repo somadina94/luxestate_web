@@ -244,6 +244,45 @@ class AuthService {
     }
   }
 
+  async updateUser(
+    access_token: string,
+    data: { first_name?: string; last_name?: string; phone?: string },
+  ) {
+    try {
+      const response = await axiosInstance.patch("/users/", data, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      return { status: response.status, data: response.data };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        return {
+          status: axiosError.response.status,
+          data: axiosError.response.data,
+          message:
+            (axiosError.response.data as { detail?: string })?.detail ||
+            (axiosError.response.data as { message?: string })?.message ||
+            "Update failed",
+        };
+      } else if (axiosError.request) {
+        return {
+          status: 0,
+          data: null,
+          message: "No response from server. Please check your connection.",
+        };
+      } else {
+        return {
+          status: 0,
+          data: null,
+          message: axiosError.message || "An error occurred",
+        };
+      }
+    }
+  }
+
   async getAllUsers(access_token: string) {
     try {
       const response = await axiosInstance.get("/admin/users", {
