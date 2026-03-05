@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { AUTH_COOKIE_NAME } from "@/lib/auth-cookie";
-import authService from "@/services/auth/auth-service";
-import { useAppDispatch, setUser } from "./store";
+import { authService } from "@/services";
 
 const LOGIN_PATH = "/login";
 const DEFAULT_AUTHENTICATED_REDIRECT = "/";
