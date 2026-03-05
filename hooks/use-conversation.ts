@@ -24,30 +24,29 @@ function toMessage(api: ApiMessage): Message {
     conversation_id: api.conversation_id,
     sender_id: api.sender_id,
     content: api.content,
-    timestamp:
-      api.created_at ?? api.timestamp ?? new Date().toISOString(),
+    timestamp: api.created_at ?? api.timestamp ?? new Date().toISOString(),
     is_read: api.is_read ?? false,
   };
 }
 
 function sortMessagesByTime(msgs: Message[]): Message[] {
   return [...msgs].sort(
-    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
   );
 }
 
 export const useConversation = (
   conversationId?: number,
   accessToken?: string | null,
-  currentUserId?: number
+  currentUserId?: number,
 ) => {
   const { socket, send } = useWS();
   const [messages, setMessages] = useState<Message[]>([]);
   const [deliveredMessageIds, setDeliveredMessageIds] = useState<Set<number>>(
-    () => new Set()
+    () => new Set(),
   );
   const [readMessageIds, setReadMessageIds] = useState<Set<number>>(
-    () => new Set()
+    () => new Set(),
   );
   const [loading, setLoading] = useState(true);
   const [subscribed, setSubscribed] = useState(false);
@@ -139,7 +138,9 @@ export const useConversation = (
         });
       } else if (data.type === "delivered") {
         setDeliveredMessageIds((prev) =>
-          new Set(prev).add((data as ChatWSPayload & { message_id: number }).message_id)
+          new Set(prev).add(
+            (data as ChatWSPayload & { message_id: number }).message_id,
+          ),
         );
       } else if (data.type === "read_receipt") {
         const ids = (data as { message_ids: number[] }).message_ids ?? [];
@@ -159,18 +160,22 @@ export const useConversation = (
       if (messageIds.length === 0) return;
       send({ type: "read", conversation_id: convId, message_ids: messageIds });
     },
-    [send]
+    [send],
   );
 
   const sendMessage = useCallback(
-    (payload: { conversation_id: number; sender_id: number; content: string }) => {
+    (payload: {
+      conversation_id: number;
+      sender_id: number;
+      content: string;
+    }) => {
       send({
         type: "message",
         conversation_id: payload.conversation_id,
         content: payload.content,
       });
     },
-    [send]
+    [send],
   );
 
   return {

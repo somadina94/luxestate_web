@@ -127,7 +127,9 @@ export default function SidebarComponent() {
                 <button
                   onClick={() => {
                     router.push("/");
-                    logout();
+                    setTimeout(() => {
+                      logout();
+                    }, 1000);
                   }}
                   className="flex flex-col items-center cursor-pointer"
                 >
