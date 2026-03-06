@@ -41,7 +41,7 @@ export default function ActiveSubscription() {
   if (!activeSubscription) {
     return (
       <div className="flex flex-col gap-4 mx-auto max-w-2xl w-full">
-        <h5 className="text-lg font-bold">Active Subscription</h5>
+        <h5 className="text-sm font-semibold">Active Subscription</h5>
         <NoResult />
       </div>
     );
@@ -49,7 +49,7 @@ export default function ActiveSubscription() {
 
   return (
     <div className="mx-auto max-w-2xl w-full">
-      <h5 className="text-lg font-bold">Active Subscription</h5>
+      <h5 className="text-sm font-semibold">Active Subscription</h5>
       <SubscriptionItem subscription={activeSubscription} />
     </div>
   );
