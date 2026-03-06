@@ -70,7 +70,7 @@ const PROPERTY_TYPES = [
 ];
 
 const LISTING_TYPES = [
-  { label: "Sale", value: "sale" },
+  { label: "Sale", value: "sell" },
   { label: "Rent", value: "rent" },
   { label: "Lease", value: "lease" },
 ];

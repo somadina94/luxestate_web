@@ -39,7 +39,7 @@ export default function AdminStats() {
   }, [access_token]);
 
   const propertiesForSale = properties?.filter(
-    (prop) => prop.listing_type === "sale",
+    (prop) => prop.listing_type === "sell",
   );
   const propertiesForRent = properties?.filter(
     (prop) => prop.listing_type === "rent",
@@ -124,7 +124,7 @@ export default function AdminStats() {
           inMonth(p.created_at),
       ).length;
       const Sell = (properties ?? []).filter(
-        (p) => p.listing_type === "sale" && inMonth(p.created_at),
+        (p) => p.listing_type === "sell" && inMonth(p.created_at),
       ).length;
 
       months.push({ month: date, Rent, Sell });
