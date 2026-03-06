@@ -39,7 +39,12 @@ export default function SellerSubscriptionList() {
   }
 
   if (subscriptions.length === 0) {
-    return <NoResult />;
+    return (
+      <div className="flex flex-col gap-4 mx-auto max-w-2xl w-full">
+        <h5 className="text-lg font-bold">Subscriptions history</h5>
+        <NoResult />
+      </div>
+    );
   }
 
   return (
