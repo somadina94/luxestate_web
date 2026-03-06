@@ -8,7 +8,6 @@ import {
   BellIcon,
   TicketIcon,
   PlusIcon,
-  SubscriptIcon,
   CreditCardIcon,
 } from "lucide-react";
 import PropertyIcon from "@/components/atoms/PropertyIcon";
@@ -51,9 +50,9 @@ export const ADMIN_MENU_ITEMS: MenuItem[] = [
     icon: TicketIcon,
   },
   {
-    title: "Subscriptions",
-    url: "/admin-dashboard/subscriptions",
-    icon: SubscriptIcon,
+    title: "Subscription Plans",
+    url: "/admin-dashboard/subscription-plans",
+    icon: CreditCardIcon,
   },
 ];
 
