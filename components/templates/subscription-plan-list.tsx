@@ -50,7 +50,7 @@ export default function SubscriptionPlanList() {
 
   return (
     <div className="flex flex-col gap-4 mx-auto max-w-2xl w-full">
-      <h5 className="text-lg font-bold">Subscription Plans</h5>
+      <h5 className="text-sm font-semibold">Subscription Plans</h5>
       {subscriptionPlans.map((subscriptionPlan) => (
         <SubscriptionPlanItem
           key={subscriptionPlan.id}

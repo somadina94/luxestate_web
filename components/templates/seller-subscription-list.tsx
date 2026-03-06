@@ -23,7 +23,15 @@ export default function SellerSubscriptionList() {
         access_token as string,
       );
       if (response.status === 200) {
-        setSubscriptions(response.data);
+        const expiredOnly = (response.data as Subscription[]).filter(
+          (s) => s.status === "expired",
+        );
+        const sorted = [...expiredOnly].sort(
+          (a, b) =>
+            new Date(b.created_at ?? 0).getTime() -
+            new Date(a.created_at ?? 0).getTime(),
+        );
+        setSubscriptions(sorted);
       } else {
         toast.error(response.message || "Failed to fetch subscriptions");
       }
@@ -41,7 +49,7 @@ export default function SellerSubscriptionList() {
   if (subscriptions.length === 0) {
     return (
       <div className="flex flex-col gap-4 mx-auto max-w-2xl w-full">
-        <h5 className="text-lg font-bold">Subscriptions history</h5>
+        <h5 className="text-sm font-semibold">Subscriptions history</h5>
         <NoResult />
       </div>
     );
@@ -49,7 +57,7 @@ export default function SellerSubscriptionList() {
 
   return (
     <div className="flex flex-col gap-4 mx-auto max-w-2xl w-full">
-      <h5 className="text-lg font-bold">Subscriptions history</h5>
+      <h5 className="text-sm font-semibold">Subscriptions history</h5>
       {subscriptions.map((subscription) => (
         <SubscriptionItem key={subscription.id} subscription={subscription} />
       ))}
