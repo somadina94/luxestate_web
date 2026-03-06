@@ -150,7 +150,7 @@ class TicketService {
   }
   async updateTicket(ticket: Ticket, access_token: string) {
     try {
-      const response = await axiosInstance.put(`/ticket/${ticket.id}`, ticket, {
+      const response = await axiosInstance.patch(`/ticket/${ticket.id}`, ticket, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },

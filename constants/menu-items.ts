@@ -8,6 +8,7 @@ import {
   BellIcon,
   TicketIcon,
   PlusIcon,
+  SubscriptIcon,
 } from "lucide-react";
 import PropertyIcon from "@/components/atoms/PropertyIcon";
 
@@ -47,6 +48,11 @@ export const ADMIN_MENU_ITEMS: MenuItem[] = [
     title: "Tickets",
     url: "/admin-dashboard/tickets",
     icon: TicketIcon,
+  },
+  {
+    title: "Subscriptions",
+    url: "/admin-dashboard/subscriptions",
+    icon: SubscriptIcon,
   },
 ];
 
