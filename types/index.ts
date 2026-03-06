@@ -7,7 +7,11 @@ import { Conversation } from "./conversation";
 import { Notification } from "./notification";
 import { Ticket } from "./ticket";
 import { TicketMessage } from "./ticket-message";
-
+import { Subscription, SubscriptionStatus } from "./subscription";
+import {
+  SubscriptionPlan,
+  SubscriptionPlanDurationType,
+} from "./subscription-plan";
 export {
   type User,
   type Property,
@@ -19,4 +23,8 @@ export {
   type Notification,
   type Ticket,
   type TicketMessage,
+  type Subscription,
+  type SubscriptionStatus,
+  type SubscriptionPlan,
+  type SubscriptionPlanDurationType,
 };

@@ -16,12 +16,7 @@ import {
   MenuItem,
 } from "@/constants/menu-items";
 import Link from "next/link";
-import Image from "next/image";
-import logoDark from "@/assets/logo.png";
-import logoLight from "@/assets/logo-light.png";
 import { useAppSelector, RootState, AuthState } from "@/store";
-
-import { useTheme } from "next-themes";
 import { LightDarkToggle } from "../atoms/light-dark-toggle";
 import { useRouter } from "next/navigation";
 import { HouseIcon, LogOut } from "lucide-react";
@@ -30,9 +25,9 @@ import { useLogout } from "@/hooks/use-logout";
 import { useUnreadCount } from "@/hooks/use-unread-count";
 import { useUnreadNotificationCount } from "@/hooks/use-unread-notification-count";
 import { useOpenTicketCount } from "@/hooks/use-open-ticket-count";
+import { toast } from "sonner";
 
 export default function SidebarComponent() {
-  const theme = useTheme();
   const pathname = usePathname();
   const router = useRouter();
   const logout = useLogout();
@@ -129,6 +124,7 @@ export default function SidebarComponent() {
                     router.push("/");
                     setTimeout(() => {
                       logout();
+                      toast.success("Logged out successfully");
                     }, 1000);
                   }}
                   className="flex flex-col items-center cursor-pointer"
