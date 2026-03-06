@@ -39,7 +39,12 @@ export default function ActiveSubscription() {
   }
 
   if (!activeSubscription) {
-    return <NoResult />;
+    return (
+      <div className="flex flex-col gap-4 mx-auto max-w-2xl w-full">
+        <h5 className="text-lg font-bold">Active Subscription</h5>
+        <NoResult />
+      </div>
+    );
   }
 
   return (
