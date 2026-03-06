@@ -42,7 +42,7 @@ const formSchema = z.object({
   zip_code: z.string().min(1, "Zip code is required"),
   country: z.string().min(1, "Country is required"),
   latitude: z.number().min(1, "Latitude is required"),
-  longitude: z.number().min(1, "Longitude is required"),
+  longitude: z.number().min(-180, "Longitude must be between -180 and 180").max(180, "Longitude must be between -180 and 180"),
   property_type: z.string().min(1, "Property type is required"),
   bedrooms: z.number().min(1, "Bedrooms is required"),
   bathrooms: z.number().min(1, "Bathrooms is required"),
@@ -68,7 +68,7 @@ const PROPERTY_TYPES = [
 ];
 
 const LISTING_TYPES = [
-  { label: "Sale", value: "sell" },
+  { label: "Sell", value: "sell" },
   { label: "Rent", value: "rent" },
   { label: "Lease", value: "lease" },
 ];
