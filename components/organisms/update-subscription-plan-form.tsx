@@ -33,7 +33,7 @@ const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().min(1, "Description is required"),
   price: z.number().min(0, "Price must be 0 or greater"),
-  currency: z.string().length(3, "Currency must be 3 characters").default("USD"),
+  currency: z.string().length(3, "Currency must be 3 characters"),
   duration: z.number().int().min(1, "Duration must be at least 1"),
   duration_type: z.enum(["day", "month", "year"]),
   listing_limit: z.number().int().min(1, "Listing limit must be at least 1"),
