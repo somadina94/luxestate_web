@@ -68,10 +68,7 @@ export default function SubscriptionPlanItem({
       </div>
       <div className="flex flex-row gap-2 items-center justify-between">
         <span>Price:</span>
-        <span>
-          {subscriptionPlan.currency}
-          {formatAmount(subscriptionPlan.price)}
-        </span>
+        <span>{formatAmount(subscriptionPlan.price)}</span>
       </div>
       <div className="flex flex-row gap-2 items-center justify-between">
         <span>Currency:</span>
