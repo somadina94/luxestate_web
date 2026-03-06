@@ -7,6 +7,7 @@ import { subscriptionService } from "@/services";
 import { toast } from "sonner";
 import { useAppSelector, RootState, AuthState } from "@/store";
 import { useEffect, useState } from "react";
+import { formatAmount } from "@/utils/helpers";
 
 interface SubscriptionPlanItemProps {
   subscriptionPlan: SubscriptionPlan;
@@ -67,7 +68,10 @@ export default function SubscriptionPlanItem({
       </div>
       <div className="flex flex-row gap-2 items-center justify-between">
         <span>Price:</span>
-        <span>{subscriptionPlan.price}</span>
+        <span>
+          {subscriptionPlan.currency}
+          {formatAmount(subscriptionPlan.price)}
+        </span>
       </div>
       <div className="flex flex-row gap-2 items-center justify-between">
         <span>Currency:</span>
