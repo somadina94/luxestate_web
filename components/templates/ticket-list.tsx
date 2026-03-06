@@ -27,6 +27,24 @@ const STATUS_OPTIONS: { value: StatusFilter; label: string }[] = [
   { value: "closed", label: "Closed" },
 ];
 
+const STATUS_ORDER: Record<string, number> = {
+  open: 0,
+  in_progress: 1,
+  closed: 2,
+};
+
+// Sort: 1) by status (open first, in_progress next, closed last), 2) by created_at newest first within each status
+function sortTicketsByStatusAndDate(tickets: Ticket[]): Ticket[] {
+  return [...tickets].sort((a, b) => {
+    const orderA = STATUS_ORDER[a.status ?? ""] ?? 3;
+    const orderB = STATUS_ORDER[b.status ?? ""] ?? 3;
+    if (orderA !== orderB) return orderA - orderB;
+    const dateA = new Date(a.created_at ?? 0).getTime();
+    const dateB = new Date(b.created_at ?? 0).getTime();
+    return dateB - dateA; // latest first
+  });
+}
+
 export default function TicketList() {
   const router = useRouter();
   const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -51,8 +69,8 @@ export default function TicketList() {
   }, [access_token, user?.id]);
 
   const filteredTickets = useMemo(() => {
-    if (statusFilter === "all") return tickets;
-    return tickets.filter((t) => (t.status ?? "") === statusFilter);
+    let list = statusFilter === "all" ? tickets : tickets.filter((t) => (t.status ?? "") === statusFilter);
+    return sortTicketsByStatusAndDate(list);
   }, [tickets, statusFilter]);
 
   if (loading) {

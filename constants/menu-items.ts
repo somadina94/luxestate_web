@@ -9,6 +9,7 @@ import {
   TicketIcon,
   PlusIcon,
   SubscriptIcon,
+  CreditCardIcon,
 } from "lucide-react";
 import PropertyIcon from "@/components/atoms/PropertyIcon";
 
@@ -82,6 +83,7 @@ export const BUYER_MENU_ITEMS: MenuItem[] = [
     url: "/buyer-dashboard/tickets",
     icon: TicketIcon,
   },
+
   {
     title: "Settings",
     url: "/buyer-dashboard/settings",
@@ -114,6 +116,11 @@ export const SELLER_MENU_ITEMS: MenuItem[] = [
     title: "Tickets",
     url: "/seller-dashboard/tickets",
     icon: TicketIcon,
+  },
+  {
+    title: "Billing & Payments",
+    url: "/seller-dashboard/billing-and-payments",
+    icon: CreditCardIcon,
   },
   {
     title: "Settings",

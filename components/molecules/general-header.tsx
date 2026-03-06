@@ -27,11 +27,20 @@ export default function GeneralHeader() {
         <Link href="/features">Features</Link>
         <Link href="/about">About Us</Link>
       </div>
-      <Button asChild>
-        <Link href={path} className="text-white">
-          Dashboard
-        </Link>
-      </Button>
+      {isLoggedIn && (
+        <Button asChild>
+          <Link href={path} className="text-white">
+            Dashboard
+          </Link>
+        </Button>
+      )}
+      {!isLoggedIn && (
+        <Button asChild>
+          <Link href="/login" className="text-white">
+            Login
+          </Link>
+        </Button>
+      )}
     </header>
   );
 }
