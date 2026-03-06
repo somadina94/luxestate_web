@@ -11,6 +11,7 @@ export interface SearchPropertiesParams {
   currency?: string | null;
   property_type?: string | null;
   status?: string | null;
+  listing_type?: string | null;
   min_bedrooms?: number | null;
   max_bedrooms?: number | null;
   min_bathrooms?: number | null;
@@ -480,6 +481,9 @@ class PropertyService {
       }
       if (params.status !== undefined && params.status !== null) {
         queryParams.status = params.status;
+      }
+      if (params.listing_type !== undefined && params.listing_type !== null) {
+        queryParams.listing_type = params.listing_type;
       }
       if (params.search_query !== undefined && params.search_query !== null) {
         queryParams.search_query = params.search_query;

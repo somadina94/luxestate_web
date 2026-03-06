@@ -36,6 +36,7 @@ export default function AdminProperties() {
   const [maxBathrooms, setMaxBathrooms] = useState("");
   const [propertyType, setPropertyType] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
+  const [listingType, setListingType] = useState<string | null>(null);
   const [isFeatured, setIsFeatured] = useState<boolean | null>(null);
   const [isActive, setIsActive] = useState<boolean | null>(null);
 
@@ -69,6 +70,7 @@ export default function AdminProperties() {
         max_bathrooms: maxBathrooms ? Number(maxBathrooms) : null,
         property_type: propertyType || null,
         status: status || null,
+        listing_type: listingType || null,
         is_featured: isFeatured,
         is_active: isActive,
         skip: (currentPage - 1) * limit,
@@ -111,6 +113,7 @@ export default function AdminProperties() {
     maxBathrooms,
     propertyType,
     status,
+    listingType,
     isFeatured,
     isActive,
     currentPage,
@@ -136,6 +139,7 @@ export default function AdminProperties() {
     setMaxBathrooms("");
     setPropertyType(null);
     setStatus(null);
+    setListingType(null);
     setIsFeatured(null);
     setIsActive(null);
     setCurrentPage(1);
@@ -158,6 +162,7 @@ export default function AdminProperties() {
     maxBathrooms ||
     propertyType ||
     status ||
+    listingType ||
     isFeatured !== null ||
     isActive !== null;
 
@@ -324,6 +329,25 @@ export default function AdminProperties() {
               <SelectItem value="for_rent">For Rent</SelectItem>
               <SelectItem value="sold">Sold</SelectItem>
               <SelectItem value="rented">Rented</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Listing type (Rent / Sell) */}
+          <Select
+            value={listingType || undefined}
+            onValueChange={(value) => {
+              setListingType(value === "all" ? null : value);
+              setCurrentPage(1);
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Rent or Sell" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="sell">Sell</SelectItem>
+              <SelectItem value="rent">Rent</SelectItem>
+              <SelectItem value="lease">Lease</SelectItem>
             </SelectContent>
           </Select>
 
