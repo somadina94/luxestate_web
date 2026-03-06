@@ -30,12 +30,14 @@ import { useRouter } from "next/navigation";
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().min(1, "Description is required"),
-  price: z.coerce.number().min(0, "Price must be 0 or greater"),
+  price: z.number().min(0, "Price must be 0 or greater"),
   currency: z.string().length(3, "Currency must be 3 characters").default("USD"),
-  duration: z.coerce.number().int().min(1, "Duration must be at least 1"),
+  duration: z.number().int().min(1, "Duration must be at least 1"),
   duration_type: z.enum(["day", "month", "year"]),
-  listing_limit: z.coerce.number().int().min(1, "Listing limit must be at least 1"),
+  listing_limit: z.number().int().min(1, "Listing limit must be at least 1"),
 });
+
+type FormValues = z.infer<typeof formSchema>;
 
 const DURATION_TYPES = [
   { value: "day", label: "Day" },
@@ -49,7 +51,7 @@ export default function CreateSubscriptionPlanForm() {
     (state: RootState) => state.auth,
   ) as AuthState;
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     mode: "onChange",
     defaultValues: {
@@ -67,7 +69,7 @@ export default function CreateSubscriptionPlanForm() {
     formState: { isSubmitting, isValid },
   } = form;
 
-  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+  const handleSubmit = async (data: FormValues) => {
     const res = await subscriptionService.createSellerSubscriptionPlan(
       access_token as string,
       {
@@ -143,7 +145,15 @@ export default function CreateSubscriptionPlanForm() {
                     <FormItem>
                       <FormLabel>Price</FormLabel>
                       <FormControl>
-                        <Input type="number" step="0.01" min={0} {...field} />
+                        <Input
+                          type="number"
+                          step="0.01"
+                          min={0}
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(e.target.valueAsNumber ?? 0)
+                          }
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -176,7 +186,14 @@ export default function CreateSubscriptionPlanForm() {
                     <FormItem>
                       <FormLabel>Duration</FormLabel>
                       <FormControl>
-                        <Input type="number" min={1} {...field} />
+                        <Input
+                          type="number"
+                          min={1}
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(e.target.valueAsNumber ?? 1)
+                          }
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -218,7 +235,14 @@ export default function CreateSubscriptionPlanForm() {
                   <FormItem>
                     <FormLabel>Listing limit</FormLabel>
                     <FormControl>
-                      <Input type="number" min={1} {...field} />
+                      <Input
+                        type="number"
+                        min={1}
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(e.target.valueAsNumber ?? 1)
+                        }
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
