@@ -132,6 +132,13 @@ export const useConversation = (
 
       if (data.type === "new_message") {
         const msg = (data as ChatWSPayload & { message: Message }).message;
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(
+            new CustomEvent("chat:new-message", {
+              detail: { conversationId, message: msg },
+            })
+          );
+        }
         setMessages((prev) => {
           if (prev.some((m) => m.id === msg.id)) return prev;
           return sortMessagesByTime([...prev, msg]);

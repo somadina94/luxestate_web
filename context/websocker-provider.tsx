@@ -19,6 +19,27 @@ const WSContext = createContext<WSContextType>({
   send: () => {},
 });
 
+const RECONNECT_INITIAL_MS = 1000;
+const RECONNECT_MAX_MS = 30000;
+
+function getWsUrl(token: string): string | null {
+  if (!token) return null;
+  const base =
+    typeof process !== "undefined" && process.env.NEXT_PUBLIC_WS_BASE_URL?.trim();
+  if (base) {
+    return base.endsWith("?") || base.includes("?") ? `${base}${token}` : `${base}?token=${token}`;
+  }
+  if (typeof window !== "undefined") {
+    const api = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+    if (api) {
+      const wsScheme = api.startsWith("https") ? "wss" : "ws";
+      const host = api.replace(/^https?:\/\//, "").replace(/\/$/, "");
+      return `${wsScheme}://${host}/ws/multi?token=${token}`;
+    }
+  }
+  return null;
+}
+
 export const WebSocketProvider = ({
   token,
   children,
@@ -28,27 +49,56 @@ export const WebSocketProvider = ({
 }) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const reconnectAttemptRef = useRef(0);
 
   useEffect(() => {
-    if (!token) return;
+    const url = getWsUrl(token);
+    if (!url) return;
 
-    const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_BASE_URL}${token}`);
-    socketRef.current = ws;
+    let currentWs: WebSocket | null = null;
 
-    ws.onopen = () => {
-      setSocket(ws);
+    const connect = () => {
+      const ws = new WebSocket(url);
+      currentWs = ws;
+      socketRef.current = ws;
+
+      ws.onopen = () => {
+        reconnectAttemptRef.current = 0;
+        setSocket(ws);
+      };
+
+      ws.onclose = () => {
+        socketRef.current = null;
+        setSocket(null);
+        const delay = Math.min(
+          RECONNECT_INITIAL_MS * 2 ** reconnectAttemptRef.current,
+          RECONNECT_MAX_MS
+        );
+        reconnectAttemptRef.current += 1;
+        reconnectTimeoutRef.current = setTimeout(() => {
+          reconnectTimeoutRef.current = null;
+          connect();
+        }, delay);
+      };
+
+      ws.onerror = () => {};
     };
-    ws.onclose = () => {
-      setSocket(null);
-      socketRef.current = null;
-    };
-    ws.onerror = () => {};
+
+    connect();
 
     return () => {
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+        reconnectTimeoutRef.current = null;
+      }
       socketRef.current = null;
       setSocket(null);
-      if (ws.readyState === WebSocket.CONNECTING || ws.readyState === WebSocket.OPEN) {
-        ws.close();
+      if (
+        currentWs?.readyState === WebSocket.CONNECTING ||
+        currentWs?.readyState === WebSocket.OPEN
+      ) {
+        currentWs.close();
       }
     };
   }, [token]);
