@@ -29,19 +29,27 @@ export default function ChatList() {
     [],
   );
 
-  useEffect(() => {
-    const fetchConversations = async () => {
-      setLoading(true);
-      const res = await chatService.getConversations(access_token as string);
-      if (res.status === 200) {
-        setConversations(res.data);
-      } else {
-        toast.error(res.message);
-      }
-      setLoading(false);
-    };
-    fetchConversations();
+  const refetch = useCallback(async () => {
+    if (!access_token) return;
+    setLoading(true);
+    const res = await chatService.getConversations(access_token);
+    if (res.status === 200) {
+      setConversations(res.data);
+    } else {
+      toast.error(res.message);
+    }
+    setLoading(false);
   }, [access_token]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  useEffect(() => {
+    const onNewMessage = () => refetch();
+    window.addEventListener("chat:new-message", onNewMessage);
+    return () => window.removeEventListener("chat:new-message", onNewMessage);
+  }, [refetch]);
 
   const sortedConversations = [...conversations].sort(
     (a, b) => (lastMessageTimes[b.id!] ?? 0) - (lastMessageTimes[a.id!] ?? 0),
